@@ -1,0 +1,1128 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "8bfcfa40",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import pandas as pd\n",
+    "import matplotlib.pyplot as plt\n",
+    "import seaborn as sns"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "720e3768",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df = pd.read_csv('mushrooms.csv')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "845ba382",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>class</th>\n",
+       "      <th>cap-shape</th>\n",
+       "      <th>cap-surface</th>\n",
+       "      <th>cap-color</th>\n",
+       "      <th>bruises</th>\n",
+       "      <th>odor</th>\n",
+       "      <th>gill-attachment</th>\n",
+       "      <th>gill-spacing</th>\n",
+       "      <th>gill-size</th>\n",
+       "      <th>gill-color</th>\n",
+       "      <th>stalk-shape</th>\n",
+       "      <th>stalk-root</th>\n",
+       "      <th>stalk-surface-above-ring</th>\n",
+       "      <th>stalk-surface-below-ring</th>\n",
+       "      <th>stalk-color-above-ring</th>\n",
+       "      <th>stalk-color-below-ring</th>\n",
+       "      <th>veil-type</th>\n",
+       "      <th>veil-color</th>\n",
+       "      <th>ring-number</th>\n",
+       "      <th>ring-type</th>\n",
+       "      <th>spore-print-color</th>\n",
+       "      <th>population</th>\n",
+       "      <th>habitat</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>p</td>\n",
+       "      <td>x</td>\n",
+       "      <td>s</td>\n",
+       "      <td>n</td>\n",
+       "      <td>t</td>\n",
+       "      <td>p</td>\n",
+       "      <td>f</td>\n",
+       "      <td>c</td>\n",
+       "      <td>n</td>\n",
+       "      <td>k</td>\n",
+       "      <td>e</td>\n",
+       "      <td>e</td>\n",
+       "      <td>s</td>\n",
+       "      <td>s</td>\n",
+       "      <td>w</td>\n",
+       "      <td>w</td>\n",
+       "      <td>p</td>\n",
+       "      <td>w</td>\n",
+       "      <td>o</td>\n",
+       "      <td>p</td>\n",
+       "      <td>k</td>\n",
+       "      <td>s</td>\n",
+       "      <td>u</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>e</td>\n",
+       "      <td>x</td>\n",
+       "      <td>s</td>\n",
+       "      <td>y</td>\n",
+       "      <td>t</td>\n",
+       "      <td>a</td>\n",
+       "      <td>f</td>\n",
+       "      <td>c</td>\n",
+       "      <td>b</td>\n",
+       "      <td>k</td>\n",
+       "      <td>e</td>\n",
+       "      <td>c</td>\n",
+       "      <td>s</td>\n",
+       "      <td>s</td>\n",
+       "      <td>w</td>\n",
+       "      <td>w</td>\n",
+       "      <td>p</td>\n",
+       "      <td>w</td>\n",
+       "      <td>o</td>\n",
+       "      <td>p</td>\n",
+       "      <td>n</td>\n",
+       "      <td>n</td>\n",
+       "      <td>g</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>e</td>\n",
+       "      <td>b</td>\n",
+       "      <td>s</td>\n",
+       "      <td>w</td>\n",
+       "      <td>t</td>\n",
+       "      <td>l</td>\n",
+       "      <td>f</td>\n",
+       "      <td>c</td>\n",
+       "      <td>b</td>\n",
+       "      <td>n</td>\n",
+       "      <td>e</td>\n",
+       "      <td>c</td>\n",
+       "      <td>s</td>\n",
+       "      <td>s</td>\n",
+       "      <td>w</td>\n",
+       "      <td>w</td>\n",
+       "      <td>p</td>\n",
+       "      <td>w</td>\n",
+       "      <td>o</td>\n",
+       "      <td>p</td>\n",
+       "      <td>n</td>\n",
+       "      <td>n</td>\n",
+       "      <td>m</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>p</td>\n",
+       "      <td>x</td>\n",
+       "      <td>y</td>\n",
+       "      <td>w</td>\n",
+       "      <td>t</td>\n",
+       "      <td>p</td>\n",
+       "      <td>f</td>\n",
+       "      <td>c</td>\n",
+       "      <td>n</td>\n",
+       "      <td>n</td>\n",
+       "      <td>e</td>\n",
+       "      <td>e</td>\n",
+       "      <td>s</td>\n",
+       "      <td>s</td>\n",
+       "      <td>w</td>\n",
+       "      <td>w</td>\n",
+       "      <td>p</td>\n",
+       "      <td>w</td>\n",
+       "      <td>o</td>\n",
+       "      <td>p</td>\n",
+       "      <td>k</td>\n",
+       "      <td>s</td>\n",
+       "      <td>u</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>e</td>\n",
+       "      <td>x</td>\n",
+       "      <td>s</td>\n",
+       "      <td>g</td>\n",
+       "      <td>f</td>\n",
+       "      <td>n</td>\n",
+       "      <td>f</td>\n",
+       "      <td>w</td>\n",
+       "      <td>b</td>\n",
+       "      <td>k</td>\n",
+       "      <td>t</td>\n",
+       "      <td>e</td>\n",
+       "      <td>s</td>\n",
+       "      <td>s</td>\n",
+       "      <td>w</td>\n",
+       "      <td>w</td>\n",
+       "      <td>p</td>\n",
+       "      <td>w</td>\n",
+       "      <td>o</td>\n",
+       "      <td>e</td>\n",
+       "      <td>n</td>\n",
+       "      <td>a</td>\n",
+       "      <td>g</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "  class cap-shape cap-surface cap-color bruises odor gill-attachment  \\\n",
+       "0     p         x           s         n       t    p               f   \n",
+       "1     e         x           s         y       t    a               f   \n",
+       "2     e         b           s         w       t    l               f   \n",
+       "3     p         x           y         w       t    p               f   \n",
+       "4     e         x           s         g       f    n               f   \n",
+       "\n",
+       "  gill-spacing gill-size gill-color stalk-shape stalk-root  \\\n",
+       "0            c         n          k           e          e   \n",
+       "1            c         b          k           e          c   \n",
+       "2            c         b          n           e          c   \n",
+       "3            c         n          n           e          e   \n",
+       "4            w         b          k           t          e   \n",
+       "\n",
+       "  stalk-surface-above-ring stalk-surface-below-ring stalk-color-above-ring  \\\n",
+       "0                        s                        s                      w   \n",
+       "1                        s                        s                      w   \n",
+       "2                        s                        s                      w   \n",
+       "3                        s                        s                      w   \n",
+       "4                        s                        s                      w   \n",
+       "\n",
+       "  stalk-color-below-ring veil-type veil-color ring-number ring-type  \\\n",
+       "0                      w         p          w           o         p   \n",
+       "1                      w         p          w           o         p   \n",
+       "2                      w         p          w           o         p   \n",
+       "3                      w         p          w           o         p   \n",
+       "4                      w         p          w           o         e   \n",
+       "\n",
+       "  spore-print-color population habitat  \n",
+       "0                 k          s       u  \n",
+       "1                 n          n       g  \n",
+       "2                 n          n       m  \n",
+       "3                 k          s       u  \n",
+       "4                 n          a       g  "
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "pd.set_option('display.max_columns', None)\n",
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "44a596af",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(8124, 23)"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "cfe723b8",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "RangeIndex: 8124 entries, 0 to 8123\n",
+      "Data columns (total 23 columns):\n",
+      " #   Column                    Non-Null Count  Dtype \n",
+      "---  ------                    --------------  ----- \n",
+      " 0   class                     8124 non-null   object\n",
+      " 1   cap-shape                 8124 non-null   object\n",
+      " 2   cap-surface               8124 non-null   object\n",
+      " 3   cap-color                 8124 non-null   object\n",
+      " 4   bruises                   8124 non-null   object\n",
+      " 5   odor                      8124 non-null   object\n",
+      " 6   gill-attachment           8124 non-null   object\n",
+      " 7   gill-spacing              8124 non-null   object\n",
+      " 8   gill-size                 8124 non-null   object\n",
+      " 9   gill-color                8124 non-null   object\n",
+      " 10  stalk-shape               8124 non-null   object\n",
+      " 11  stalk-root                8124 non-null   object\n",
+      " 12  stalk-surface-above-ring  8124 non-null   object\n",
+      " 13  stalk-surface-below-ring  8124 non-null   object\n",
+      " 14  stalk-color-above-ring    8124 non-null   object\n",
+      " 15  stalk-color-below-ring    8124 non-null   object\n",
+      " 16  veil-type                 8124 non-null   object\n",
+      " 17  veil-color                8124 non-null   object\n",
+      " 18  ring-number               8124 non-null   object\n",
+      " 19  ring-type                 8124 non-null   object\n",
+      " 20  spore-print-color         8124 non-null   object\n",
+      " 21  population                8124 non-null   object\n",
+      " 22  habitat                   8124 non-null   object\n",
+      "dtypes: object(23)\n",
+      "memory usage: 1.4+ MB\n"
+     ]
+    }
+   ],
+   "source": [
+    "df.info()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "ef11137e",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>class</th>\n",
+       "      <th>cap-shape</th>\n",
+       "      <th>cap-surface</th>\n",
+       "      <th>cap-color</th>\n",
+       "      <th>bruises</th>\n",
+       "      <th>odor</th>\n",
+       "      <th>gill-attachment</th>\n",
+       "      <th>gill-spacing</th>\n",
+       "      <th>gill-size</th>\n",
+       "      <th>gill-color</th>\n",
+       "      <th>stalk-shape</th>\n",
+       "      <th>stalk-root</th>\n",
+       "      <th>stalk-surface-above-ring</th>\n",
+       "      <th>stalk-surface-below-ring</th>\n",
+       "      <th>stalk-color-above-ring</th>\n",
+       "      <th>stalk-color-below-ring</th>\n",
+       "      <th>veil-type</th>\n",
+       "      <th>veil-color</th>\n",
+       "      <th>ring-number</th>\n",
+       "      <th>ring-type</th>\n",
+       "      <th>spore-print-color</th>\n",
+       "      <th>population</th>\n",
+       "      <th>habitat</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>count</th>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>8124</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>unique</th>\n",
+       "      <td>2</td>\n",
+       "      <td>6</td>\n",
+       "      <td>4</td>\n",
+       "      <td>10</td>\n",
+       "      <td>2</td>\n",
+       "      <td>9</td>\n",
+       "      <td>2</td>\n",
+       "      <td>2</td>\n",
+       "      <td>2</td>\n",
+       "      <td>12</td>\n",
+       "      <td>2</td>\n",
+       "      <td>5</td>\n",
+       "      <td>4</td>\n",
+       "      <td>4</td>\n",
+       "      <td>9</td>\n",
+       "      <td>9</td>\n",
+       "      <td>1</td>\n",
+       "      <td>4</td>\n",
+       "      <td>3</td>\n",
+       "      <td>5</td>\n",
+       "      <td>9</td>\n",
+       "      <td>6</td>\n",
+       "      <td>7</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>top</th>\n",
+       "      <td>e</td>\n",
+       "      <td>x</td>\n",
+       "      <td>y</td>\n",
+       "      <td>n</td>\n",
+       "      <td>f</td>\n",
+       "      <td>n</td>\n",
+       "      <td>f</td>\n",
+       "      <td>c</td>\n",
+       "      <td>b</td>\n",
+       "      <td>b</td>\n",
+       "      <td>t</td>\n",
+       "      <td>b</td>\n",
+       "      <td>s</td>\n",
+       "      <td>s</td>\n",
+       "      <td>w</td>\n",
+       "      <td>w</td>\n",
+       "      <td>p</td>\n",
+       "      <td>w</td>\n",
+       "      <td>o</td>\n",
+       "      <td>p</td>\n",
+       "      <td>w</td>\n",
+       "      <td>v</td>\n",
+       "      <td>d</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>freq</th>\n",
+       "      <td>4208</td>\n",
+       "      <td>3656</td>\n",
+       "      <td>3244</td>\n",
+       "      <td>2284</td>\n",
+       "      <td>4748</td>\n",
+       "      <td>3528</td>\n",
+       "      <td>7914</td>\n",
+       "      <td>6812</td>\n",
+       "      <td>5612</td>\n",
+       "      <td>1728</td>\n",
+       "      <td>4608</td>\n",
+       "      <td>3776</td>\n",
+       "      <td>5176</td>\n",
+       "      <td>4936</td>\n",
+       "      <td>4464</td>\n",
+       "      <td>4384</td>\n",
+       "      <td>8124</td>\n",
+       "      <td>7924</td>\n",
+       "      <td>7488</td>\n",
+       "      <td>3968</td>\n",
+       "      <td>2388</td>\n",
+       "      <td>4040</td>\n",
+       "      <td>3148</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "       class cap-shape cap-surface cap-color bruises  odor gill-attachment  \\\n",
+       "count   8124      8124        8124      8124    8124  8124            8124   \n",
+       "unique     2         6           4        10       2     9               2   \n",
+       "top        e         x           y         n       f     n               f   \n",
+       "freq    4208      3656        3244      2284    4748  3528            7914   \n",
+       "\n",
+       "       gill-spacing gill-size gill-color stalk-shape stalk-root  \\\n",
+       "count          8124      8124       8124        8124       8124   \n",
+       "unique            2         2         12           2          5   \n",
+       "top               c         b          b           t          b   \n",
+       "freq           6812      5612       1728        4608       3776   \n",
+       "\n",
+       "       stalk-surface-above-ring stalk-surface-below-ring  \\\n",
+       "count                      8124                     8124   \n",
+       "unique                        4                        4   \n",
+       "top                           s                        s   \n",
+       "freq                       5176                     4936   \n",
+       "\n",
+       "       stalk-color-above-ring stalk-color-below-ring veil-type veil-color  \\\n",
+       "count                    8124                   8124      8124       8124   \n",
+       "unique                      9                      9         1          4   \n",
+       "top                         w                      w         p          w   \n",
+       "freq                     4464                   4384      8124       7924   \n",
+       "\n",
+       "       ring-number ring-type spore-print-color population habitat  \n",
+       "count         8124      8124              8124       8124    8124  \n",
+       "unique           3         5                 9          6       7  \n",
+       "top              o         p                 w          v       d  \n",
+       "freq          7488      3968              2388       4040    3148  "
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.describe()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "c368d56e",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "class                       0\n",
+       "cap-shape                   0\n",
+       "cap-surface                 0\n",
+       "cap-color                   0\n",
+       "bruises                     0\n",
+       "odor                        0\n",
+       "gill-attachment             0\n",
+       "gill-spacing                0\n",
+       "gill-size                   0\n",
+       "gill-color                  0\n",
+       "stalk-shape                 0\n",
+       "stalk-root                  0\n",
+       "stalk-surface-above-ring    0\n",
+       "stalk-surface-below-ring    0\n",
+       "stalk-color-above-ring      0\n",
+       "stalk-color-below-ring      0\n",
+       "veil-type                   0\n",
+       "veil-color                  0\n",
+       "ring-number                 0\n",
+       "ring-type                   0\n",
+       "spore-print-color           0\n",
+       "population                  0\n",
+       "habitat                     0\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.isna().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "82b21238",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Changing class values to \"1\" and \"0\"s.\n",
+    "df[\"class\"] = [1 if i == \"p\" else 0 for i in df[\"class\"]]\n",
+    "\n",
+    "# Dropping \"veil-type\" column.\n",
+    "df.drop(\"veil-type\",axis=1,inplace=True)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2c8d2671",
+   "metadata": {},
+   "source": [
+    "# find out which machine learning algorithm will give the best result"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "dc88f902",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "y = df[\"class\"] \n",
+    "x = df.drop([\"class\"], axis=1) "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "04343343",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#LABEL ENCODING\n",
+    "from sklearn.preprocessing import LabelEncoder\n",
+    "label_en=LabelEncoder()\n",
+    "h=[ 'cap-shape', 'cap-surface', 'cap-color', 'bruises', 'odor',\n",
+    "       'gill-attachment', 'gill-spacing', 'gill-size', 'gill-color',\n",
+    "       'stalk-shape', 'stalk-root', 'stalk-surface-above-ring',\n",
+    "       'stalk-surface-below-ring', 'stalk-color-above-ring',\n",
+    "       'stalk-color-below-ring', 'veil-color', 'ring-number', 'ring-type',\n",
+    "       'spore-print-color', 'population', 'habitat']\n",
+    "for i in np.arange(len(h)):\n",
+    "    x[h[i]] = label_en.fit_transform(x[h[i]])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "8f696991",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#SPLITING INTO TRAIN AND TEST\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "x_train,x_test,y_train,y_test = train_test_split(x,y,random_state=0,test_size=0.3)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "968ec718",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#STANDARDSCALING\n",
+    "from sklearn.preprocessing import StandardScaler\n",
+    "sc = StandardScaler()\n",
+    "x_train = sc.fit_transform(x_train)\n",
+    "x_test = sc.transform(x_test)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "19d9ee34",
+   "metadata": {},
+   "source": [
+    "This is a classification problem so we are"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d9230d9e",
+   "metadata": {},
+   "source": [
+    "1) LogisticRegression"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "c69edd7a",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "LogisticRegression()"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from sklearn.linear_model import LogisticRegression\n",
+    "classifier = LogisticRegression()\n",
+    "classifier.fit(x_train, y_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "id": "3679b136",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[1221   51]\n",
+      " [  72 1094]]\n",
+      "accuracy is 0.9495488105004102\n"
+     ]
+    }
+   ],
+   "source": [
+    "from sklearn.metrics import confusion_matrix, accuracy_score , recall_score , precision_score\n",
+    "y_pred = classifier.predict(x_test)\n",
+    "cm = confusion_matrix(y_test, y_pred)\n",
+    "print(cm)\n",
+    "print('accuracy is',accuracy_score(y_test, y_pred))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "a67e1972",
+   "metadata": {},
+   "source": [
+    "2) K Nearest neighbour"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "id": "55029809",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.neighbors import KNeighborsClassifier\n",
+    "acc_values = []\n",
+    "neighbors = np.arange(2,15)\n",
+    "for k in neighbors : \n",
+    "    classifier = KNeighborsClassifier(n_neighbors = 5, metric = 'minkowski')\n",
+    "    classifier.fit(x_train, y_train)\n",
+    "    y_pred = classifier.predict(x_test)\n",
+    "    acc = accuracy_score(y_test , y_pred)\n",
+    "    acc_values.append(acc)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d56dd7c1",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "id": "712e56b0",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[1272    0]\n",
+      " [   0 1166]]\n",
+      "accuracy is 1.0\n"
+     ]
+    }
+   ],
+   "source": [
+    "from sklearn.metrics import confusion_matrix, accuracy_score , recall_score , precision_score\n",
+    "y_pred = classifier.predict(x_test)\n",
+    "cm = confusion_matrix(y_test, y_pred)\n",
+    "print(cm)\n",
+    "print('accuracy is',accuracy_score(y_test, y_pred))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "4e831cc9",
+   "metadata": {},
+   "source": [
+    "3) SVM"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "id": "f9613cfe",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "SVC(kernel='linear', random_state=0)"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from sklearn.svm import SVC\n",
+    "classifier = SVC(kernel = 'linear', random_state = 0)\n",
+    "classifier.fit(x_train, y_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "id": "4e6e21ad",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[1253   19]\n",
+      " [   5 1161]]\n",
+      "accuracy is 0.9901558654634947\n"
+     ]
+    }
+   ],
+   "source": [
+    "y_pred = classifier.predict(x_test)\n",
+    "cm = confusion_matrix(y_test, y_pred)\n",
+    "print(cm)\n",
+    "print('accuracy is',accuracy_score(y_test, y_pred))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f6a811c5",
+   "metadata": {},
+   "source": [
+    "4) Decision Tree"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "id": "f45b8432",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "DecisionTreeClassifier(criterion='entropy', random_state=0)"
+      ]
+     },
+     "execution_count": 24,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from sklearn.tree import DecisionTreeClassifier\n",
+    "classifier = DecisionTreeClassifier(criterion = 'entropy', random_state = 0)\n",
+    "classifier.fit(x_train, y_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "id": "e4b15474",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[1272    0]\n",
+      " [   0 1166]]\n",
+      "accuracy is 1.0\n"
+     ]
+    }
+   ],
+   "source": [
+    "y_pred = classifier.predict(x_test)\n",
+    "cm = confusion_matrix(y_test, y_pred)\n",
+    "print(cm)\n",
+    "print('accuracy is',accuracy_score(y_test, y_pred))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e9fa1ab2",
+   "metadata": {},
+   "source": [
+    "5)Random Forest"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "id": "bc6648bc",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "RandomForestClassifier(criterion='entropy', n_estimators=10, random_state=0)"
+      ]
+     },
+     "execution_count": 26,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from sklearn.ensemble import RandomForestClassifier\n",
+    "classifier = RandomForestClassifier(n_estimators = 10, criterion = 'entropy', random_state = 0)\n",
+    "classifier.fit(x_train, y_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "id": "72425c1a",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[1272    0]\n",
+      " [   0 1166]]\n",
+      "accuracy is 1.0\n"
+     ]
+    }
+   ],
+   "source": [
+    "y_pred = classifier.predict(x_test)\n",
+    "cm = confusion_matrix(y_test, y_pred)\n",
+    "print(cm)\n",
+    "print('accuracy is',accuracy_score(y_test, y_pred))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c96b7ec8",
+   "metadata": {},
+   "source": [
+    "6)Kernal SVM"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "id": "51a5979a",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "SVC(random_state=0)"
+      ]
+     },
+     "execution_count": 28,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from sklearn.svm import SVC\n",
+    "classifier = SVC(kernel = 'rbf', random_state = 0)\n",
+    "classifier.fit(x_train, y_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "id": "d6e6a3f2",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[1272    0]\n",
+      " [   0 1166]]\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "1.0"
+      ]
+     },
+     "execution_count": 29,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "y_pred = classifier.predict(x_test)\n",
+    "cm = confusion_matrix(y_test, y_pred)\n",
+    "print(cm)\n",
+    "accuracy_score(y_test, y_pred)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "765ae295",
+   "metadata": {},
+   "source": [
+    "# Naïve Bayes’ Classifier"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "id": "6284bcc3",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "GaussianNB()"
+      ]
+     },
+     "execution_count": 30,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from sklearn.naive_bayes import GaussianNB\n",
+    "classifer = GaussianNB()\n",
+    "classifer.fit(x_train,y_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "id": "001c0851",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[1158  114]\n",
+      " [  93 1073]]\n",
+      "0.9150943396226415\n"
+     ]
+    }
+   ],
+   "source": [
+    "y_pred = classifer.predict(x_test)\n",
+    "from sklearn.metrics import accuracy_score,confusion_matrix\n",
+    "cs = confusion_matrix(y_test,y_pred)\n",
+    "acc = accuracy_score(y_test,y_pred)\n",
+    "print(cs)\n",
+    "print(acc)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "17ec0286",
+   "metadata": {},
+   "source": [
+    "Naïve Bayes’ Classifier (Bernoulli)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "id": "86bbdb06",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[1227   45]\n",
+      " [ 201  965]]\n",
+      "0.8990976210008204\n"
+     ]
+    }
+   ],
+   "source": [
+    "from sklearn.naive_bayes import BernoulliNB\n",
+    "cla = BernoulliNB()\n",
+    "cla.fit(x_train,y_train)\n",
+    "y_pred = cla.predict(x_test)\n",
+    "cs = confusion_matrix(y_test,y_pred)\n",
+    "acc = accuracy_score(y_test,y_pred)\n",
+    "print(cs)\n",
+    "print(acc)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7004044d",
+   "metadata": {},
+   "source": [
+    "From above result we can conclude that all Classification models performs good."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f3e3e3d7",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.8"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
